@@ -1,38 +1,40 @@
 {% set name = "aws-requests-auth" %}
-{% set version = "0.4.2" %}
+{% set version = "0.4.3" %}
 
 package:
-  name: "{{ name|lower }}"
-  version: "{{ version }}"
+  name: {{ name|lower }}
+  version: {{ version }}
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 112c85fe938a01e28f7e1a87168615b6977b28596362b1dcbafbf4f2cc69f720
+  sha256: 33593372018b960a31dbbe236f89421678b885c35f0b6a7abfae35bb77e069b2
 
 build:
-  number: 0
   noarch: python
-  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv "
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  number: 0
 
 requirements:
   host:
+    - python >=3.7
     - pip
-    - python
-    - requests >=0.14.0
   run:
-    - python
+    - python >=3.7
     - requests >=0.14.0
 
 test:
   imports:
     - aws_requests_auth
+  commands:
+    - pip check
+  requires:
+    - pip
 
 about:
   home: https://github.com/davidmuller/aws-requests-auth
-  license: BSD
-  license_family: BSD
-  license_file: LICENSE
   summary: AWS signature version 4 signing process for the python requests module
+  license: BSD-3-Clause
+  license_file: LICENSE
   description:
     This package allows you to authenticate to AWS with Amazon's signature version 4 signing process with the python requests library.
     Tested with both python 2.7 and 3.
